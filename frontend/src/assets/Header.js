@@ -176,8 +176,10 @@ export default function Header() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large"  >
+              <Link to="/">
               
-                <Home sx={{ color: '#004c4c' }}/>
+                <Home sx={{ color: '#004c4c' }} />
+                </Link>
             
             </IconButton>
            

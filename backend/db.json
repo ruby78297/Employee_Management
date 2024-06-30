@@ -1,23 +1,6 @@
 {
   "employees": [
     {
-      "id": 1,
-      "name": "Amit Kumar singh",
-      "departments": [
-        {
-          "title": "Engineering"
-        },
-        {
-          "title": "HR"
-        }
-      ],
-      "salary": 50000,
-      "phoneNumber": "9876543210",
-      "email": "amit.kumar@gmail.com",
-      "address": "123 MG Road, Delhi",
-      "state": "Delhi"
-    },
-    {
       "id": 2,
       "name": "Priya Sharma",
       "departments": [
@@ -240,37 +223,6 @@
       "email": "anjali.nair@gmail.com",
       "address": "505 Nehru Nagar, Ahmedabad",
       "state": "Gujarat"
-    },
-    {
-      "name": "Yatendra Rana",
-      "email": "yrana7829@gmail.com",
-      "phoneNumber": "9536807878",
-      "address": "1D-404, Isro Housing Colony\nDomlur",
-      "state": "Gujarat",
-      "salary": "20000",
-      "departments": [
-        {
-          "title": "Engineering"
-        }
-      ],
-      "id": 19
-    },
-    {
-      "name": "Ruby Rana",
-      "email": "yrana7829@gmail.com",
-      "phoneNumber": "9536807878",
-      "address": "1D-404, Isro Housing Colony\nDomlur",
-      "state": "Maharashtra",
-      "salary": "20000",
-      "departments": [
-        {
-          "title": "Sales"
-        },
-        {
-          "title": "Marketing"
-        }
-      ],
-      "id": 20
     }
   ]
 }

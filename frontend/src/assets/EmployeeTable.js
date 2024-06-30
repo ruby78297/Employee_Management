@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Grid,
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -78,18 +79,23 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
   return (
     <Container>
       <Box my={6}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h4" align="center" sx={{ color: '#004c4c', mb: 2 }}>
+        <Box >
+          <Grid container spacing={2}>
+            <Grid item md={4} xs={12}>  <Typography variant="h4"  sx={{ color: '#004c4c', mb: 2 }}>
             Employee List
-          </Typography>
-          <SearchBar onSearch={setSearchTerm} height={'3rem'} />
-          <Button
+          </Typography></Grid>
+            <Grid item md={6} xs={12} textAlign={"center"}>  <SearchBar onSearch={setSearchTerm} height={'3rem'} sWidth="70%" /></Grid>
+            <Grid item md={2} xs={12} >    <Button
             variant='contained'
             sx={{ bgcolor: '#004c4c', height: '3rem' }}
             onClick={handleAddEmployee}
           >
             Add Employee
-          </Button>
+          </Button></Grid>
+          </Grid>
+        
+        
+       
         </Box>
         <Box m={6} sx={scrollbarStyles}>
           <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
