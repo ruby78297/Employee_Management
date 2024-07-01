@@ -22,6 +22,9 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import SearchBar from './SearchBar';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 const EmployeeTable = ({ employees, onDeleteEmployee }) => {
   const dispatch = useDispatch();
@@ -35,13 +38,12 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
     setOpenDialog(true);
   };
 
- const handleConfirmDelete = () => {
-  if (selectedEmployeeId) {
-    onDeleteEmployee(selectedEmployeeId);
-    setOpenDialog(false);
-  }
-};
-
+  const handleConfirmDelete = () => {
+    if (selectedEmployeeId) {
+      onDeleteEmployee(selectedEmployeeId);
+      setOpenDialog(false);
+    }
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -76,29 +78,46 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
     navigate('/add-new-employee');
   };
 
+  const handleDownloadPDF = () => {
+    const input = document.getElementById('table-container');
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.save('employee-list.pdf');
+    });
+  };
+
   return (
     <Container>
       <Box my={6}>
-        <Box >
+        <Box>
           <Grid container spacing={2}>
-            <Grid item md={4} xs={12}>  <Typography variant="h4"  sx={{ color: '#004c4c', mb: 2 }}>
-            Employee List
-          </Typography></Grid>
-            <Grid item md={6} xs={12} textAlign={"center"}>  <SearchBar onSearch={setSearchTerm} height={'3rem'} sWidth="70%" /></Grid>
-            <Grid item md={2} xs={12} >    <Button
-            variant='contained'
-            sx={{ bgcolor: '#004c4c', height: '3rem' }}
-            onClick={handleAddEmployee}
-          >
-            Add Employee
-          </Button></Grid>
+            <Grid item md={4} xs={12}>
+              <Typography variant="h4" sx={{ color: '#004c4c', mb: 2 }}>
+                Employee List
+              </Typography>
+            </Grid>
+            <Grid item md={6} xs={12} textAlign={"center"}>
+              <SearchBar onSearch={setSearchTerm} height={'3rem'} sWidth="70%" />
+            </Grid>
+            <Grid item md={2} xs={12}>
+              <Button
+                variant='contained'
+                sx={{ bgcolor: '#004c4c', height: '3rem' }}
+                onClick={handleAddEmployee}
+              >
+                Add Employee
+              </Button>
+            </Grid>
           </Grid>
-        
-        
-       
         </Box>
         <Box m={6} sx={scrollbarStyles}>
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
+          <TableContainer id="table-container" component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead sx={{ fontWeight: 700 }}>
                 <TableRow>
@@ -128,31 +147,50 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                     <TableCell>{employee.salary}</TableCell>
                     <TableCell>{employee.address}</TableCell>
                     <TableCell>
-                      <Link to={`/edit-employee/${employee.id}`}>
-                        <IconButton
-                          size='small'
-                          sx={{
-                            bgcolor: '#004c4c',
-                            color: '#b2d8d8',
-                            '&:hover': { bgcolor: '#004c4c' },
-                          }}
-                        >
-                          <Edit />
-                        </IconButton>
-                      </Link>
-                      <IconButton
-                        onClick={() => handleDelete(employee.id)}
-                        size='small'
-                        sx={{
-                          bgcolor: '#FFBFBF',
-                          color: 'red',
-                          marginLeft: { md: '1rem', xs: 0 },
-                          mt: { md: 0, xs: 0.5 },
-                          '&:hover': { bgcolor: '#FFBFBF' },
-                        }}
-                      >
-                        <Delete />
-                      </IconButton>
+                      <Grid container spacing={1}>
+                        <Grid item xs={4}>
+                          <Link to={`/edit-employee/${employee.id}`}>
+                            <IconButton
+                              size='small'
+                              sx={{
+                                bgcolor: '#004c4c',
+                                color: '#b2d8d8',
+                                '&:hover': { bgcolor: '#004c4c' },
+                              }}
+                            >
+                              <Edit />
+                            </IconButton>
+                          </Link>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <IconButton
+                            onClick={() => handleDelete(employee.id)}
+                            size='small'
+                            sx={{
+                              bgcolor: '#FFBFBF',
+                              color: 'red',
+                              '&:hover': { bgcolor: '#FFBFBF' },
+                              ml:1.5
+                            }}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <IconButton
+                            onClick={handleDownloadPDF}
+                            size='small'
+                            sx={{
+                              bgcolor: '#004c4c',
+                              color: '#b2d8d8',
+                              '&:hover': { bgcolor: '#004c4c' },
+                              ml: {md:1.5, xs: 3.5 }
+                            }}
+                          >
+                            <ArrowCircleDownIcon />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 ))}
