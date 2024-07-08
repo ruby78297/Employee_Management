@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEmployee } from "../store/actions/employeeActions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,12 +30,13 @@ const states = [
 ];
 
 const EditEmployee = () => {
-  const { employeeId } = useParams(); 
+  const  {employeeId}  = useParams(); 
+  console.log("emp", employeeId)
  
 
   const dispatch = useDispatch();
-  const { employees } = useSelector((state) => state.employee);
-  
+  const { loading, error, employees } = useSelector(state => state.employee);
+ 
 
   const [formData, setFormData] = useState({
     name: "",
@@ -51,12 +52,9 @@ const EditEmployee = () => {
 
  
   useEffect(() => {
-    
-
-    const employee = employees.find(emp => emp.id === parseInt(employeeId));
+  
+    const employee = employees.find(emp => emp._id === employeeId);
  
-
-
     if (employee) {
       setFormData({
         name: employee.name,
@@ -69,6 +67,7 @@ const EditEmployee = () => {
       });
     }
   }, [employeeId, employees]);
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,6 +102,7 @@ const EditEmployee = () => {
 
     return Object.values(tempErrors).every((x) => x === "");
   };
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -110,7 +110,8 @@ const EditEmployee = () => {
       try {
         const response = await dispatch(updateEmployee(employeeId, formData));
 
-          toast.success('Employee updated successfully');
+        toast.success('Employee updated successfully');
+        navigate('/');
        
       } catch (error) {
           
@@ -123,6 +124,7 @@ const EditEmployee = () => {
     <Fragment>
       <Header />
       <Container>
+        
         <Box
           my={8}
           mx={{ md: "20%", xs: "1%" }}

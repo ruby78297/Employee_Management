@@ -16,6 +16,9 @@ const HomePage = () => {
   const { loading, error, employees } = useSelector(state => state.employee);
   const [currentPage, setCurrentPage] = useState(1);
 
+
+ 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,15 +35,18 @@ const HomePage = () => {
   const handleDeleteEmployee = async (id) => {
     try {
       await dispatch(deleteEmployee(id));
-     
+      await dispatch(fetchEmployees()); 
+      toast.success('Employee deleted successfully');
     } catch (error) {
       console.error('Error deleting employee:', error);
+      toast.error('Error deleting employee');
     }
   };
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentEmployees = employees.slice(startIndex, endIndex);
+ 
 
   const nextPage = () => {
     if (currentPage * ITEMS_PER_PAGE < employees.length) {

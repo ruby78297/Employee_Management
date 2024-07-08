@@ -149,7 +149,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                     <TableCell>
                       <Grid container spacing={1}>
                         <Grid item xs={4}>
-                          <Link to={`/edit-employee/${employee.id}`}>
+                          <Link to={`/edit-employee/${employee._id}`}>
                             <IconButton
                               size='small'
                               sx={{
@@ -164,7 +164,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                         </Grid>
                         <Grid item xs={4}>
                           <IconButton
-                            onClick={() => handleDelete(employee.id)}
+                            onClick={() => handleDelete(employee._id)}
                             size='small'
                             sx={{
                               bgcolor: '#FFBFBF',
