@@ -83,25 +83,25 @@ const EditEmployee = () => {
 
   const validate = () => {
     let tempErrors = {};
-    tempErrors.name = formData.name ? "" : "Name is required";
+    tempErrors.name = /^[a-zA-Z\s]+$/.test(formData.name) ? "" : "Name must contain only letters and spaces";
     tempErrors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
       ? ""
       : "Email is not valid";
-    tempErrors.phoneNumber =
-      formData.phoneNumber.length === 10
-        ? ""
-        : "Phone number must be 10 digits";
+    tempErrors.phoneNumber = formData.phoneNumber.length === 10
+      ? ""
+      : "Phone number must be 10 digits";
     tempErrors.address = formData.address ? "" : "Address is required";
     tempErrors.salary = formData.salary ? "" : "Salary is required";
     tempErrors.departments =
-      formData.departments.length > 0
-        ? ""
-        : "At least one department is required";
+      formData.departments.length > 0 ? "" : "At least one department is required";
+    tempErrors.state = formData.state ? "" : "State is required";
 
     setErrors(tempErrors);
 
     return Object.values(tempErrors).every((x) => x === "");
   };
+
+
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
