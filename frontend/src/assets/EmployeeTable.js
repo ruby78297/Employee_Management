@@ -78,18 +78,31 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
     navigate('/add-new-employee');
   };
 
-  const handleDownloadPDF = () => {
-    const input = document.getElementById('table-container');
+  // const handleDownloadPDF = () => {
+  //   const input = document.getElementById('table-container');
 
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('l', 'mm', 'a4');
-      const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //   html2canvas(input).then((canvas) => {
+  //     const imgData = canvas.toDataURL('image/png');
+  //     const pdf = new jsPDF('l', 'mm', 'a4');
+  //     const imgWidth = 210;
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save('employee-list.pdf');
-    });
+  //     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  //     pdf.save('employee-list.pdf');
+  //   });
+  // };
+
+   const handleDownloadPDF = (employee) => {
+    const doc = new jsPDF();
+
+    doc.text(`Name: ${employee.name}`, 10, 10);
+    doc.text(`Email: ${employee.email}`, 10, 20);
+    doc.text(`Phone: ${employee.phoneNumber}`, 10, 30);
+    doc.text(`Departments: ${employee.departments.map(dept => dept.title).join(', ')}`, 10, 40);
+    doc.text(`Salary: ${employee.salary}`, 10, 50);
+    doc.text(`Address: ${employee.address}`, 10, 60);
+
+    doc.save(`${employee.name}_details.pdf`);
   };
 
   return (
@@ -178,7 +191,7 @@ const EmployeeTable = ({ employees, onDeleteEmployee }) => {
                         </Grid>
                         <Grid item xs={4}>
                           <IconButton
-                            onClick={handleDownloadPDF}
+                            onClick={() => handleDownloadPDF(employee)}
                             size='small'
                             sx={{
                               bgcolor: '#004c4c',
